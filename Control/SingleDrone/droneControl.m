@@ -149,10 +149,10 @@ function moment = fullAttitudeControl(zd,yd,q,omega,ka,ko)
 % normalize inputs
 zd = zd/norm(zd);
 
-kzd = Rzmat(yd)*zd;
+kzd = Rzmat(yd)'*zd;
 th_cmd = atan(kzd(1)/kzd(3));
 
-lzd = Rymat(th_cmd)*kzd;
+lzd = Rymat(th_cmd)'*kzd;
 phi_cmd = atan2(-lzd(2), lzd(3));
 
 qcmd = eul2quat(phi_cmd,th_cmd,yd,'zyx');
