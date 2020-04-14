@@ -22,7 +22,7 @@ drone_params.motors.kt_prop = 3.6e-6;
 drone_params.motors.kd_prop = 5.4e-8;
 % control parameters
 kt = drone_params.motors.kt_prop;
-kd = drone_params.motors.kt_prop;
+kd = drone_params.motors.kd_prop;
 l = drone_params.mechanical.l;
 drone_params.control.allocation_matrix = ...
   [kt, kt, kt, kt;
@@ -50,4 +50,3 @@ for i = 1:nDrones
   out = [out, drone_params];
 end
 end
-
