@@ -74,7 +74,7 @@ pf = p0;
 %pf = p0(:,1:nDrones) + 2*(rand(3, nDrones)-[0.5; 0.5; 0]);
 % create random desired formation
 pf = 3*(rand(3, nDrones)-[0.5; 0.5; 0]);
-P = [[p0(:,1:nDrones),p0(:,1:nDrones),pf];0*(rand(1,length(T)*nDrones)-0.5)];
+P = [[p0(:,1:nDrones),p0(:,1:nDrones),pf];pi/3*(rand(1,length(T)*nDrones)-0.5)];
 
 PTS = trajectory_interpolation(P,T,0.01,'step');
 
@@ -109,5 +109,5 @@ Bd_future = timeseries(Bforward,PTS.Time)
 disp("Running Simulation")
 out = sim("ErskineMultiDroneFormation.slx");
 disp("Plotting Simulation")
-plotDroneFlights(out,simkey);
-plotResults(out,Bd_traj,Rigidity_traj);
+plotResults(out,Bd_traj,Rigidity_traj); pause(0.1);
+plotDroneFlights(out,simkey, ['r','b']);

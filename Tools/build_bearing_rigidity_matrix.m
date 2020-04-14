@@ -16,11 +16,7 @@ for i = 1:nEdges
   idx_i = find(Drones==di);
   idx_j = find(Drones==dj);
   
-  ci = cos(Y(idx_i));
-  si = sin(Y(idx_i));
-  Ri = [ ci, si, 0;
-    -si, ci, 0;
-    0,  0, 1];
+  Ri = Rzmat(Y(idx_i));
   
   dij = norm(P(:,idx_j)-P(:,idx_i));
   if(dij<0.01)

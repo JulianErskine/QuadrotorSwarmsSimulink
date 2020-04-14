@@ -25,11 +25,7 @@ for i=1:m
   dj = E(i,2);
   
   % rotation of drone i in world frame
-  ci = cos(Y(di));
-  si = sin(Y(di));
-  Ri = [ ci, si, 0;
-    -si, ci, 0;
-    0,  0, 1];
+  Ri = Rzmat(Y(di));
   
   % bearing of drone j in drone i frame
   pij = P(:,dj)-P(:,di);

@@ -7,8 +7,8 @@ function [out] = GradientBearingController(B, Bd, droneStates, nDrones, edges)
 %   
 %
 
-kc = 0.25;
-ky = 0.1;
+kc = 1;
+ky = 1;
 
 u = zeros(3,nDrones);
 omega = zeros(1,nDrones);
@@ -41,15 +41,13 @@ for di = 1:nDrones
       Bijd = Bd(:,E);
       P = eye(3)-Bij*Bij';
       u(:,di) = u(:,di) - kc*P*Bijd;
-      omega(di) = omega(di) - ky*Bij'*S*Bijd;
+      omega(di) = omega(di) + ky*Bij'*S*Bijd;
     elseif di == edges(E,2) % if another drone is observing it
       dj = edges(E,1);
       Bji = B(:,E);
       Bjid = Bd(:,E);
       P = eye(3)-Bji*Bji';
-      cij = cos(iYj(E));
-      sij = sin(iYj(E));
-      Rij = [cij, sij, 0; -sij, cij, 0; 0,0,1];
+      Rij = Rzmat(iYj(E));
       u(:,di) = u(:,di) + kc*Rij*P*Bjid;
     else % id drone i is not part of the edge
       %do nothing

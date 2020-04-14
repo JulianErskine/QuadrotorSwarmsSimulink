@@ -1,6 +1,9 @@
-function [] = plotDroneFlights(out, simkey)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+function [] = plotDroneFlights(out, simkey, varargin)
+%plotDroneFlights plots the flight of all Drones in the simulation output
+%   out: Simulation output
+%   simkey: structure indicating index of position and velocity in the
+%   output
+%   varargin(1): list of colors for the drones in seperate formations
 
 %% Check if Simulation Output Exists
 if exist('out')==0
@@ -18,14 +21,34 @@ for i = 1:length(sim_fields)
     listOfDrones = [listOfDrones, out.get(sim_fields{i})];
     time = out.get(sim_fields{i}).Time;
     data = squeeze(out.get(sim_fields{i}).Data);
-%     data_size = size(data)
-    listOfDrones(i).Name = sim_fields{i};
+    listOfDrones(length(listOfDrones)).Name = sim_fields{i};
     disp(["Found "+sim_fields{i}])
   end
 end
 nDrones_total = length(listOfDrones)
 time = round(out.get("tout"),3);
 
+%% Set color codes of drones
+if length(varargin)
+  colors = varargin{1};
+  nFormations = length(colors);
+  if mod(nDrones_total, nFormations) == 0
+    form = 1;
+    for i = 1:nDrones_total
+      droneColors(i) = string(colors(form));
+      if mod(i,(nDrones_total/nFormations)) == 0
+        form = form+1;
+      end
+    end
+  else
+    error("There must be the same number of Colors as there are formations")
+  end
+else
+  droneColors = []
+  for i = 1:nDrones_total
+    droneColors = [droneColors, string('k')];
+  end
+end
 
 %% Plot
 % create plot figure and arena
@@ -40,6 +63,7 @@ for i = 1:nDrones_total
   Quads = [Quads,Quadcopter()];
   Quads(i).set_position(listOfDrones(i).Data(1,simkey.p));
   Quads(i).set_orientation(listOfDrones(i).Data(1,simkey.q));
+  Quads(i).set_color(char(droneColors(i)));
   h_quads= [h_quads,Quads(i).plotQuadcopter()];
 end
 
